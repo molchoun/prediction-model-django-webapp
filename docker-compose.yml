@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  web:
+    build: .
+    env_file:
+      - .env
+    command: python /code/prediction_project/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - '8000:8000'
+    depends_on:
+      mldb:
+        condition: service_healthy
+
+  mldb:
+    image: postgres:15.3
+    environment:
+      - POSTGRES_DB=prediction
+      - POSTGRES_USER=ml_admin
+      - POSTGRES_PASSWORD=seMajosha37lm
+      - POSTGRES_HOST=mldb
+      - POSTGRES_PORT=5432
+    volumes:
+      - postgres_ml_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+
+
+volumes:
+  postgres_ml_data:

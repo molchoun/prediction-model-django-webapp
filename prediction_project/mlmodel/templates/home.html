@@ -1,0 +1,195 @@
+{% extends 'base.html'%}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="d-flex  justify-content-sm-center">
+  <div class="col-md-7 col-lg-8 py-2 px-2">
+    <h1 class="text-center">Price prediction</h1>
+    <p class="fw-lighter italic">Django-based web application that utilizes the power of
+      machine learning to predict house prices in Yerevan, Armenia. This project is designed for learning and
+      demonstration purposes.</p>
+    <ul class="list-group list-group-light mb-3">
+      <li class="list-group-item">
+        <h5 class="fst-normal">To achieve the final result that can be tested and evaluated <a href="{% url 'form' %}">here</a>,
+          I went through
+          the following steps:</h5>
+      </li>
+      <li class="list-group-item">
+        <div class="row g-3">
+          <div class="col-md-9">
+            <h5 class="fw-bold">1. Data Extraction</h5>
+          </div>
+          <div class="col-md-1">
+            <a href="https://docs.python.org/3/library/asyncio.html" target="_blank">
+              <img class="img-fluid float-end" style="max-width:40px;"
+                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png"
+                   alt="python-logo">
+            </a>
+          </div>
+          <div class="col-md-1">
+            <a href="https://docs.aiohttp.org/en/stable/" target="_blank">
+              <img class="img-fluid float-end" style="max-width:40px;"
+                   src="https://docs.aiohttp.org/en/stable/_static/aiohttp-plain.svg" alt="aiohttp-logo">
+            </a>
+          </div>
+          <div class="col-md-1">
+            <a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/" target="_blank">
+              <img class="img-fluid float-end" style="max-width:35px;"
+                   src="https://www.crummy.com/software/BeautifulSoup/bs4/doc/_images/6.1.jpg"
+                   alt="beautiful-soup-logo">
+            </a>
+          </div>
+        </div>
+        <p class="mb-4 py-2">
+          I started by scraping data from <a href="https://www.list.am/" target="_blank">list.am*</a>, using an
+          asynchronous web crawler that I built using
+          asyncio and aiohttp. The crawler navigates through each available real estate category (a total of 16) and
+          each
+          available city - gathering item links in bulk. Then it parses all the item pages using BeautifulSoup and regex
+          to
+          extract the relevant data into a pandas DataFrame. However, for the prediction, I only used data for houses in
+          Yerevan, as there is not enough data available for other regions.
+          <br>
+          The source code can be found on <a href="https://github.com/molchoun/async-spider" target="_blank">my
+          github</a>.
+        </p>
+        <p class="text-muted mb-2 fst-italic">*List.am is a local online marketplace, which also provides a
+          comprehensive
+          listings of properties in Yerevan.</p>
+      </li>
+      <li class="list-group-item">
+        <div class="row g-3">
+          <div class="col-md-9">
+            <h5 class="fw-bold">2. Initial Data Cleaning and storage</h5>
+          </div>
+          <div class="col-md-1">
+            <a href="https://pandas.pydata.org/" target="_blank">
+              <img class="img-fluid float-end" style="max-width:60px;"
+                   src="https://pandas.pydata.org/static/img/pandas_secondary.svg" alt="pandas-logo">
+            </a>
+          </div>
+          <div class="col-md-1">
+            <a href="https://numpy.org/" target="_blank">
+              <img class="img-fluid float-end" style="max-width:40px;" src="https://numpy.org/images/logo.svg"
+                   alt="numpy-logo">
+            </a>
+          </div>
+          <div class="col-md-1">
+            <a href="https://www.postgresql.org/" target="_blank">
+              <img class="img-fluid float-end" style="max-width:35px;"
+                   src="https://www.postgresql.org/media/img/about/press/elephant.png" alt="postgres-logo">
+            </a>
+          </div>
+        </div>
+        <p class="mb-4 py-2">
+          The aforementioned crawler also includes an initial cleaning pipeline. It cleanes noisy
+          data and converts categorical values into numeric representations to ensure consistency. The cleaned data is
+          then stored in the respective Postgres table. I handled not storing duplicates in two ways: first, by using
+          the URL as a
+          unique field in respective table, and second, by creating primary keys using hashed values of the address, ad
+          author name, and
+          price.
+        </p>
+      </li>
+      <li class="list-group-item">
+        <div class="row g-3">
+          <div class="col-md-9">
+            <h5 class="fw-bold">3. Data Cleaning and exploration</h5>
+          </div>
+          <div class="col-md-1">
+            <a href="https://jupyter.org" target="_blank">
+              <img class="img-fluid float-end" style="max-width:40px;"
+                   src="https://jupyter.org/assets/homepage/main-logo.svg" alt="jupyter-logo">
+            </a>
+          </div>
+          <div class="col-md-1">
+            <a href="https://kaggle.com/" target="_blank">
+              <img class="img-fluid float-end py-2" style="max-width:40px;" src="https://www.kaggle.com/static/images/site-logo.svg"
+                   alt="kaggle-logo">
+            </a>
+          </div>
+          <div class="col-md-1">
+            <a href="https://geopy.readthedocs.io/" target="_blank">
+              <img class="img-fluid float-end" style="max-width:60px;"
+                   src="https://geopy.readthedocs.io/en/stable/_images/logo-wide.png" alt="geopy-logo">
+            </a>
+          </div>
+        </div>
+        <p class="mb-4 py-2">
+          In this stage, I moved to Jupyter notebooks to explore the dataset. I dropped or replaced any
+      missing values,
+      identified and removed outliers, and obtained new values from existing ones using third-party APIs, such as
+      currency conversion and latitude and
+      longitude values from addresses.
+          <br>
+          The notebook can be found on my <a href="https://www.kaggle.com/molchoun/eda-and-prediction-model" target="_blank">kaggle</a>.
+        </p>
+      </li>
+      <li class="list-group-item">
+        <div class="row g-3">
+          <div class="col-md-10">
+            <h5 class="fw-bold">4. Exploratory Data Analysis</h5>
+          </div>
+          <div class="col-md-1">
+            <a href="https://seaborn.pydata.org" target="_blank">
+              <img class="img-fluid float-end" style="max-width:80px;"
+                   src="https://seaborn.pydata.org/_static/logo-wide-lightbg.svg" alt="pandas-logo">
+            </a>
+          </div>
+          <div class="col-md-1 ">
+            <a href="https://matplotlib.org" target="_blank">
+              <img class="img-fluid float-end py-1" style="max-width:80px;" src="https://matplotlib.org/_static/logo_light.svg"
+                   alt="numpy-logo">
+            </a>
+          </div>
+        </div>
+        <p class="mb-4 py-2">
+          To better understand the data and identify necessary features for prediction, I
+      conducted exploratory data analysis. This involved plotting various relationships, observing correlations, and
+      understanding the distribution of the data. I also removed additional data at this stage.
+        </p>
+      </li>
+      <li class="list-group-item">
+        <div class="row g-3">
+          <div class="col-md-11">
+            <h5 class="fw-bold">5. Model Training</h5>
+          </div>
+          <div class="col-md-1">
+            <a href="https://scikit-learn.org" target="_blank">
+              <img class="img-fluid float-end" style="max-width:60px;" src="https://scikit-learn.org/stable/_static/scikit-learn-logo-small.png"
+                   alt="numpy-logo">
+            </a>
+          </div>
+        </div>
+        <p class="mb-4 py-2">
+          I transformed the data by performing one-hot encoding using scikit-learn. I then chose and trained
+      multiple models, including RandomForestRegressor, GradientBoostingRegressor, and CatBoostRegressor. After fitting
+      and evaluating the models, the GradientBoostingRegressor performed the best, achieving around 86% accuracy, and
+      was selected as the main model.
+        </p>
+      </li>
+      <li class="list-group-item">
+        <div class="row g-3">
+          <div class="col-md-9">
+            <h5 class="fw-bold">6. Model Improvement</h5>
+          </div>
+        </div>
+        <p class="mb-4 py-2">
+          To further enhance the model&apos;s performance, I observed the feature importance and
+      utilized Standard scaling. I performed hyperparameter tuning by fitting selected values to RandomizedSearchCV and
+      evaluated the model using the new normalized and reduced data. Finally, I pickled the model and encoder for future
+      use.
+        </p>
+      </li>
+    </ul>
+    <div class="list-group">
+      <a href="" class="list-group-item">
+        <h3 class="list-group-item-heading">Heading</h3>
+        <p class="list-group-item-text">This is the content.</p>
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

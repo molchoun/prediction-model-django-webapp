@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Prediction Form{% endblock title %}
+{% block content%}
+<div class="d-flex  justify-content-sm-center">
+  <div class="col-md-7 col-lg-4 py-2 px-2">
+
+    <form id="post-form" method="post" >
+      {% csrf_token %}
+      <div class="col-md-15">
+        <h1 class="mb-2 text-center py-2">Predict House Price</h1>
+        <div class="row g-3">
+          <div class="col-sm-6">
+            {{form.new_construction|as_crispy_field}}
+          </div>
+          <div class="col-sm-6">
+            {{form.elevator|as_crispy_field}}
+          </div>
+          <div class="col-sm-6">
+            {{form.construction_type|as_crispy_field}}
+          </div>
+          <div class="col-sm-6">
+            {{form.balcony|as_crispy_field}}
+          </div>
+          <div class="col-sm-6">
+            {{form.furniture|as_crispy_field}}
+          </div>
+          <div class="col-sm-6">
+            {{form.renovation|as_crispy_field}}
+          </div>
+          <div class="form-floating col-sm-6">
+            {{form.floors_in_the_building|as_crispy_field}}
+          </div>
+          <div class="col-sm-6">
+            {{form.floor|as_crispy_field}}
+          </div>
+          <div class="form-floating col-sm-6">
+            {{form.floor_area|as_crispy_field}}
+          </div>
+          <div class="col-sm-6">
+            {{form.ceiling_height|as_crispy_field}}
+          </div>
+          <div class="col-sm-6">
+            {{form.number_of_rooms|as_crispy_field}}
+          </div>
+          <div class="col-sm-6">
+            {{form.number_of_bathrooms|as_crispy_field}}
+          </div>
+          <div class="form-floating col-md-12">
+            {{form.address|as_crispy_field}}
+          </div>
+          <div class="col-sm-6">
+
+            <button id="submit-btn" class="btn btn-outline-success" type="submit">Predict</button>
+          </div>
+          <div class="col-sm-6">
+
+            <div class="input-group mb-3">
+              <button id="loading-spinner" class="btn btn-success" type="button" disabled style="display: none">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span class="sr-only">Loading...</span>
+              </button>
+              <span class="input-group-text">$</span>
+              <input id="display-value" type="text" class="form-control" aria-label="Predicted price"
+                     placeholder="Predicted price" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </form>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+<script>
+$(document).ready(function(){
+  $('#post-form').submit(function(e){
+    e.preventDefault();
+    $("#display-value").val('');
+    $('#loading-spinner').show();
+    var serializedData = $(this).serialize();
+
+    $.ajax({
+      type:"POST",
+      url: "/form/",
+      data:  serializedData,
+      success: function(data){
+        $('#loading-spinner').hide();
+        $("#display-value").val(data["prediction"]);
+      }
+
+
+    });
+
+  })
+  $('#submit-btn').html('Predict');
+});
+</script>
+{% endblock content %}

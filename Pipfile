@@ -4,7 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
+django = "==4.2.2"
+psycopg2-binary = "==2.9.5"
+djangorestframework = "*"
+scikit-learn = "==1.2.2"
+pandas = "==1.5.3"
+geopy = "==2.3.0"
+django-crispy-forms = "==2.0"
+crispy-bootstrap5 = "==0.7"
 
 [dev-packages]
 
