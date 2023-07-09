@@ -5,4 +5,4 @@ from django import forms
 class HouseForm(forms.ModelForm):
     class Meta:
         model = House
-        fields = "__all__"
+        exclude = ['author', 'prediction']

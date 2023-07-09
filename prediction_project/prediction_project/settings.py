@@ -144,3 +144,4 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None

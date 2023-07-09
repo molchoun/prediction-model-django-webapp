@@ -1,13 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from django.conf import settings
 
 
-class CustomBooleanField(models.BooleanField):
-
-    def from_db_value(self, value, expression, connection, context):
-        if not value:
-            value = 0
-        return int(value)
 class ZeroOneBooleanField(models.BooleanField):
 
 
@@ -17,9 +12,17 @@ class ZeroOneBooleanField(models.BooleanField):
         return int(value)
 
 
+def get_or_create_public_user():
+    user = get_user_model()
+    try:
+        public_user = user.objects.get(username='public')
+    except user.DoesNotExist:
+        public_user = user.objects.create_user(username='public')
+    return public_user
+
+
 class House(models.Model):
 
-    # user =
     class ConstructionType(models.TextChoices):
         STONE = 'Stone', 'Stone'
         PANEL = 'Panels', 'Panels'
@@ -77,11 +80,16 @@ class House(models.Model):
         max_length=24,
         choices=Renovation.choices
     )
-    # owner = models.ForeignKey(
-    #     User,
-    #     on_delete=models.CASCADE,
-    #     related_name='houses'
-    # )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='house',
+        default=get_or_create_public_user
+    )
+    prediction = models.DecimalField(decimal_places=2, max_digits=12)
 
     def __str__(self):
         return f"House on {self.address}"
+
+
+

@@ -9,7 +9,7 @@ from sklearn.compose import ColumnTransformer
 def get_coordinates(address):
     geolocator = Nominatim(user_agent="http")
     location = geolocator.geocode(address)
-    if location is not None:
+    if location:
         return location.latitude, location.longitude
     else:
         return None, None
@@ -49,7 +49,7 @@ def process_data(data):
     return df
 
 
-def get_model():
+def get_prediction_model():
     with open(os.path.join(os.path.dirname(__file__), 'gbr-prediction-model.pkl'), 'rb') as f:
         model = pickle.load(f)
     return model

@@ -4,73 +4,116 @@
 {% block title %}Prediction Form{% endblock title %}
 {% block content%}
 <div class="d-flex  justify-content-sm-center">
-  <div class="col-md-7 col-lg-4 py-2 px-2">
+  <div class="col-lg-11 py-2 px-2">
+    <div class="row">
+      <div class="col-md-3">
+        <form id="post-form" method="post">
+          {% csrf_token %}
+          <div class="col-md-12">
+            <h1 class="mb-2 text-center py-2">Predict House Price</h1>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                {{form.new_construction|as_crispy_field}}
+              </div>
+              <div class="col-sm-6">
+                {{form.elevator|as_crispy_field}}
+              </div>
+              <div class="col-sm-6">
+                {{form.construction_type|as_crispy_field}}
+              </div>
+              <div class="col-sm-6">
+                {{form.balcony|as_crispy_field}}
+              </div>
+              <div class="col-sm-6">
+                {{form.furniture|as_crispy_field}}
+              </div>
+              <div class="col-sm-6">
+                {{form.renovation|as_crispy_field}}
+              </div>
+              <div class="form-floating col-sm-6">
+                {{form.floors_in_the_building|as_crispy_field}}
+              </div>
+              <div class="col-sm-6">
+                {{form.floor|as_crispy_field}}
+              </div>
+              <div class="form-floating col-sm-6">
+                {{form.floor_area|as_crispy_field}}
+              </div>
+              <div class="col-sm-6">
+                {{form.ceiling_height|as_crispy_field}}
+              </div>
+              <div class="col-sm-6">
+                {{form.number_of_rooms|as_crispy_field}}
+              </div>
+              <div class="col-sm-6">
+                {{form.number_of_bathrooms|as_crispy_field}}
+              </div>
+              <div class="form-floating col-md-12">
+                {{form.address|as_crispy_field}}
+              </div>
+              <div class="col-sm-6">
 
-    <form id="post-form" method="post" >
-      {% csrf_token %}
-      <div class="col-md-15">
-        <h1 class="mb-2 text-center py-2">Predict House Price</h1>
-        <div class="row g-3">
-          <div class="col-sm-6">
-            {{form.new_construction|as_crispy_field}}
-          </div>
-          <div class="col-sm-6">
-            {{form.elevator|as_crispy_field}}
-          </div>
-          <div class="col-sm-6">
-            {{form.construction_type|as_crispy_field}}
-          </div>
-          <div class="col-sm-6">
-            {{form.balcony|as_crispy_field}}
-          </div>
-          <div class="col-sm-6">
-            {{form.furniture|as_crispy_field}}
-          </div>
-          <div class="col-sm-6">
-            {{form.renovation|as_crispy_field}}
-          </div>
-          <div class="form-floating col-sm-6">
-            {{form.floors_in_the_building|as_crispy_field}}
-          </div>
-          <div class="col-sm-6">
-            {{form.floor|as_crispy_field}}
-          </div>
-          <div class="form-floating col-sm-6">
-            {{form.floor_area|as_crispy_field}}
-          </div>
-          <div class="col-sm-6">
-            {{form.ceiling_height|as_crispy_field}}
-          </div>
-          <div class="col-sm-6">
-            {{form.number_of_rooms|as_crispy_field}}
-          </div>
-          <div class="col-sm-6">
-            {{form.number_of_bathrooms|as_crispy_field}}
-          </div>
-          <div class="form-floating col-md-12">
-            {{form.address|as_crispy_field}}
-          </div>
-          <div class="col-sm-6">
+                <button id="submit-btn" class="btn btn-outline-success" type="submit">Predict</button>
+              </div>
+              <div class="col-sm-6">
 
-            <button id="submit-btn" class="btn btn-outline-success" type="submit">Predict</button>
-          </div>
-          <div class="col-sm-6">
-
-            <div class="input-group mb-3">
-              <button id="loading-spinner" class="btn btn-success" type="button" disabled style="display: none">
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                <span class="sr-only">Loading...</span>
-              </button>
-              <span class="input-group-text">$</span>
-              <input id="display-value" type="text" class="form-control" aria-label="Predicted price"
-                     placeholder="Predicted price" disabled>
+                <div class="input-group mb-3">
+                  <button id="loading-spinner" class="btn btn-success" type="button" disabled style="display: none">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="sr-only">Loading...</span>
+                  </button>
+                  <span class="input-group-text">$</span>
+                  <input id="display-value" type="text" class="form-control" aria-label="Predicted price"
+                         placeholder="Predicted price" disabled>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+
+
+        </form>
       </div>
+      <div class="col-md-9 py-2 px-5">
+
+        <table class="table table-hover">
+          <caption>Recent predictions</caption>
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+
+            {% for field in form %}
+            <th scope="col">{{ field.label }}</th>
+            {% endfor %}
+            <th scope="col" class="bg-success">Prediction</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for pred in recent_predictions %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{pred.construction_type}}</td>
+            <td>{{pred.new_construction}}</td>
+            <td>{{pred.elevator}}</td>
+            <td>{{pred.floors_in_the_building}}</td>
+            <td>{{pred.floor_area}}</td>
+            <td>{{pred.number_of_rooms}}</td>
+            <td>{{pred.number_of_bathrooms}}</td>
+            <td>{{pred.ceiling_height}}</td>
+            <td>{{pred.floor}}</td>
+            <td>{{pred.address|truncatewords:3}}</td>
+            <td>{{pred.balcony}}</td>
+            <td>{{pred.furniture}}</td>
+            <td>{{pred.renovation}}</td>
+            <td class="bg-success"><p class="fw-bold" style="color: white;">{{pred.prediction}}</p></td>
+          </tr>
+          {% endfor %}
+          </tbody>
 
 
-    </form>
+        </table>
+
+      </div>
+    </div>
   </div>
 </div>
 
@@ -97,7 +140,11 @@ $(document).ready(function(){
     });
 
   })
-  $('#submit-btn').html('Predict');
+
 });
+
+
+
+
 </script>
 {% endblock content %}
