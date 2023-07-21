@@ -29,7 +29,7 @@ DEBUG = True
 # ALLOWED_HOSTS = ['0.0.0.0']
 
 # Prod
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app', '.now.sh']
 
 # Application definition
 
