@@ -1,0 +1,14 @@
+{
+    "builds": [
+      {
+        "src": "prediction-model-django-webapp/prediction_project/wsgi.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "prediction-model-django-webapp/prediction_project/wsgi.py"
+      }
+    ]
+}

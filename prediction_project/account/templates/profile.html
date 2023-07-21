@@ -7,5 +7,44 @@
     <h1>Profile</h1>
     <p>Welcome to your profile {{ user.name|default:user.username }}.</p>
   </div>
+  <div class="col-md-7 col-lg-4 py-2 px-2">
+    <table class="table table-hover">
+      <caption>User predictions</caption>
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+
+        {% for field in form %}
+        <th scope="col">{{ field.label }}</th>
+        {% endfor %}
+        <th scope="col" class="bg-success">Prediction</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for pred in recent_predictions %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>{{pred.construction_type}}</td>
+        <td>{{pred.new_construction}}</td>
+        <td>{{pred.elevator}}</td>
+        <td>{{pred.floors_in_the_building}}</td>
+        <td>{{pred.floor_area}}</td>
+        <td>{{pred.number_of_rooms}}</td>
+        <td>{{pred.number_of_bathrooms}}</td>
+        <td>{{pred.ceiling_height}}</td>
+        <td>{{pred.floor}}</td>
+        <td>{{pred.address|truncatewords:3}}</td>
+        <td>{{pred.balcony}}</td>
+        <td>{{pred.furniture}}</td>
+        <td>{{pred.renovation}}</td>
+        <td class="bg-success"><p class="fw-bold" style="color: white;">{{pred.prediction}}</p></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+
+
+    </table>
+  </div>
+</div>
 </div>
 {% endblock %}

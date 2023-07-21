@@ -11,6 +11,10 @@
   <link href="{% static 'css/base.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap">
+  <script src="https://cdn.jsdelivr.net/npm/jdenticon@3.2.0/dist/jdenticon.min.js" async
+        integrity="sha384-yBhgDqxM50qJV5JPdayci8wCfooqvhFYbIKhv0hTtLvfeeyJMJCscRfFNKIxt43M"
+        crossorigin="anonymous">
+</script>
 </head>
 <body>
 <header>
@@ -47,8 +51,10 @@
                      id="navbarDropdownMenuLink"
                      href="#"
                      role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                    <img src="https://mdbootstrap.com/img/new/avatars/5.jpg" class="rounded-circle" height="22" alt=""
+
+                    <img src="https://mdbootstrap.com/img/new/avatars/5.jpg" class="rounded-circle" height="35" alt=""
                          loading="lazy"/>
+                    <svg data-jdenticon-value="{{user.username}}" class="rounded-circle" height="35" ></svg>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                     <li><a class="dropdown-item" href="{% url 'profile' %}">My profile</a></li>

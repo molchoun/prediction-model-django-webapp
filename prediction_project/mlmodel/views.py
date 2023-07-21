@@ -16,6 +16,7 @@ def form_view(request):
     user = get_user_model()
     public_user = user.objects.get(username='public')
     recent_predictions = House.objects.filter(author=public_user).order_by('-id')[:10]
+
     if request.method == 'POST':
         form = HouseForm(request.POST)
         if form.is_valid():

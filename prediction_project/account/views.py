@@ -2,14 +2,24 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm
 
-
 @login_required
 def profile(request):
+    houses = request.user.house.all()
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    print(request.META)
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[-1].strip()
+    elif request.META.get('HTTP_X_REAL_IP'):
+        ip = request.META.get('HTTP_X_REAL_IP')
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    print(ip)
     return render(
         request,
         'profile.html',
         {'section': 'profile',
-         'user': request.user}
+         'user': request.user,
+         'recent_predictions': houses}
     )
 
 
