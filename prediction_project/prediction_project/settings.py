@@ -25,7 +25,11 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+# Dev
+# ALLOWED_HOSTS = ['0.0.0.0']
+
+# Prod
+ALLOWED_HOSTS = ['.vercel.app']
 
 # Application definition
 
