@@ -1,7 +1,7 @@
 {
     "builds": [
       {
-        "src": "prediction_project/wsgi.py",
+        "src": "prediction_project/prediction_project/wsgi.py",
         "use": "@ardnt/vercel-python-wsgi",
         "config": {
           "maxLambdaSize": "15mb",
@@ -19,7 +19,7 @@
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "prediction_project/wsgi.py"
+        "dest": "prediction_project/prediction_project/wsgi.py"
       }
     ]
 }
